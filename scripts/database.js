@@ -25,16 +25,28 @@ const database = {
         { id: 4, metal: "Platinum", price: 795.45 },
         { id: 5, metal: "Palladium", price: 1241.0 }
     ],
+    types: [
+        {id: 1, type: "Ring", multiplier: 1},
+        {id: 2, type: "Earring", multiplier: 2},
+        {id: 3, type: "Necklace", multiplier: 4}
+        
+    ],
     customOrders: [
         {
             id: 1,
             metalId: 3,
             sizeId: 2,
             styleId: 3,
+            typeId:2,
             timestamp: 1614659931693
         }
     ],
+    // RAM/Working memory, where the properties from set go to
     orderBuilder: {},
+}
+
+export const getTypes = () => {
+    return database.types.map(type => ({...type}))
 }
 
 export const getMetals = () => {
@@ -52,6 +64,11 @@ export const getStyles = () => {
 export const getOrders = () => {
     return database.customOrders.map(order => ({...order}))
 }
+// set functions responsible for setting state
+export const setType = (id) => {
+    // 
+    database.orderBuilder.typeId = id
+}
 
 export const setMetal = (id) => {
     database.orderBuilder.metalId = id
@@ -65,6 +82,8 @@ export const setStyle = (id) => {
     database.orderBuilder.styleId = id
 }
 
+// This function si responsible for changing permanent state
+
 export const addCustomOrder = () => {
     // Copy the current state of user choices
     const newOrder = {...database.orderBuilder}
@@ -77,6 +96,7 @@ export const addCustomOrder = () => {
     newOrder.timestamp = Date.now()
 
     // Add the new order object to custom orders state
+    // from the orderBuilder
     database.customOrders.push(newOrder)
 
     // Reset the temporary state for user choices

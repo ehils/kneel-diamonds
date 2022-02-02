@@ -9,6 +9,9 @@ const renderAllHTML = () => {
 
 renderAllHTML()
 
+// Listens for stateChanged event
+// once event is heard, HTML is re-rendered(renderALLHTML invoked again)
+
 document.addEventListener("stateChanged", event => {
     console.log("State of data has changed. Regenerating HTML...")
     renderAllHTML()
