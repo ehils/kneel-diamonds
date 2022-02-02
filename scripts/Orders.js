@@ -1,4 +1,4 @@
-import { getOrders, getStyles, getSizes, getMetals } from "./database.js"
+import { getOrders, getStyles, getSizes, getMetals, getTypes } from "./database.js"
 
 const buildOrderListItem = (order) => {
 
@@ -31,17 +31,67 @@ const buildOrderListItem = (order) => {
             return metal.id === order.metalId
         }
     )
-
-    const totalCost = foundMetal.price + foundSize.price +foundStyle.price
     
+    
+    // import type list
+    const types = getTypes()
+    // check to see if type.id === order.typeId
+    const foundType = types.find(
+        (type) => {
+            return type.id === parseInt(order.typeId)
+        }
+    )
+    const totalCost = (foundMetal.price + foundSize.price + foundStyle.price) * foundType.multiplier
+        
     const costString = totalCost.toLocaleString("en-US", {
-        style: "currency",
-        currency: "USD"
-    })
+                style: "currency",
+                currency: "USD"
+        })
+    
+        return `<li>
+            Order #${order.id} cost ${costString}
+        </li>`
+    // const jewelryTypeSelected = foundType.id
+    // if (parseInt(jewelryTypeSelected) === 1)
+        
+    // {
+    //     const totalCost = foundMetal.price + foundSize.price + foundStyle.price
+    
+    //     const costString = totalCost.toLocaleString("en-US", {
+    //         style: "currency",
+    //         currency: "USD"
+    // })
 
-    return `<li>
-        Order #${order.id} cost ${costString}
-    </li>`
+    // return `<li>
+    //     Order #${order.id} cost ${costString}
+    // </li>`
+    // } else if (parseInt(jewelryTypeSelected) === 2) {
+    //     {
+    //         const totalCost = (foundMetal.price + foundSize.price + foundStyle.price)*2
+        
+    //         const costString = totalCost.toLocaleString("en-US", {
+    //             style: "currency",
+    //             currency: "USD"
+    //     })
+    
+    //     return `<li>
+    //         Order #${order.id} cost ${costString}
+    //     </li>`
+    //     }
+    // } else if (parseInt(jewelryTypeSelected) === 3) {
+    //     {
+    //         const totalCost = (foundMetal.price + foundSize.price + foundStyle.price)*4
+        
+    //         const costString = totalCost.toLocaleString("en-US", {
+    //             style: "currency",
+    //             currency: "USD"
+    //     })
+    
+    //     return `<li>
+    //         Order #${order.id} cost ${costString}
+    //     </li>`
+    //     }
+    // }
 }
 
 export const Orders = () => {
@@ -52,8 +102,11 @@ export const Orders = () => {
     const orders = getOrders()
 
     let html = "<ul>"
-
     const listItems = orders.map(buildOrderListItem)
+    // const listItems = orders.map(order => {
+    //     return buildOrderListItem(order)
+    // }
+    // )
 
     html += listItems.join("")
     html += "</ul>"
