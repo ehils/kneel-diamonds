@@ -1,10 +1,14 @@
-import { getMetals } from "./database.js"
+import { getMetals, setMetal } from "./database.js"
 
 const metals = getMetals()
 
+// listen for when user makes a choice in metals
 document.addEventListener(
     "change",
     (event) => {
+        if (event.target.name === "metal") {
+            setMetal(parseInt(event.target.value))
+        }
     }
 )
 
