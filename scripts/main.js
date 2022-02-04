@@ -16,3 +16,8 @@ document.addEventListener("stateChanged", event => {
     console.log("State of data has changed. Regenerating HTML...")
     renderAllHTML()
 })
+
+document.addEventListener("changeTwo", event => {
+    console.log("State of data has changed AGAIN. Regenerating HTML...")
+    // renderAllHTML()
+})
